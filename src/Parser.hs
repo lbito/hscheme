@@ -8,7 +8,6 @@ import Data.List (foldl')
 import Data.Ratio
 
 import LispVal
-
 --TODO add complex number parsing
 --TODO add vector parsing
 
@@ -125,7 +124,3 @@ parseExpr = parseAtom
                 char ')'
                 return x
 
-readExpr :: String -> LispVal
-readExpr input = case parse parseExpr "lisp" input of
-    Left err -> String $ "No match: " ++ show err
-    Right val -> val
