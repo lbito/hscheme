@@ -3,13 +3,10 @@ module Env where
 import Control.Monad.Error
 import Data.IORef
 import LispVal
-import LispError
-type Env = IORef [(String, IORef LispVal)]
+
 
 nullEnv :: IO Env
 nullEnv = newIORef []
-
-type IOThrowsError = ErrorT LispError IO
 
 liftThrows :: ThrowsError a -> IOThrowsError a
 liftThrows (Left err) = throwError err
@@ -45,11 +42,8 @@ defineVar envRef var value = do
              writeIORef envRef ((var, valueRef) : env)
              return value
 
-
 bindVars :: Env -> [(String, LispVal)] -> IO Env
 bindVars envRef bindings = readIORef envRef >>= extendEnv bindings >>= newIORef
      where extendEnv bindings env = liftM (++ env) (mapM addBinding bindings)
            addBinding (var, value) = do ref <- newIORef value
                                         return (var, ref)
-
-

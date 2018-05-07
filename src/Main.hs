@@ -1,11 +1,8 @@
 import System.Environment
 import Parser
 import LispVal
-import LispError
 import Eval
 import Repl
-import Text.ParserCombinators.Parsec hiding (spaces)
-import Control.Monad.Except
 
 main :: IO ()
 main = do args <- getArgs

@@ -4,7 +4,6 @@ import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Except
 import System.IO
 import LispVal
-import LispError
 import Eval
 import Env
 import Parser
@@ -33,7 +32,7 @@ evalString :: Env -> String -> IO String
 evalString env expr = runIOThrows $ liftM show $ (liftThrows $ readExpr expr) >>= eval env
 
 runOne :: String -> IO ()
-runOne expr = nullEnv >>= flip evalAndPrint expr
+runOne expr = primitiveBindings >>= flip evalAndPrint expr
 
 runRepl :: IO ()
-runRepl = nullEnv >>= until_ (== "quit") (readPrompt "Lisp>>> ") . evalAndPrint
+runRepl = primitiveBindings >>= until_ (== "quit") (readPrompt "Lisp>>> ") . evalAndPrint
