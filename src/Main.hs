@@ -3,17 +3,13 @@ import Parser
 import LispVal
 import LispError
 import Eval
+import Repl
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Except
 
-readExpr :: String -> ThrowsError LispVal
-readExpr input = case parse parseExpr "lisp" input of
-     Left err -> throwError $ Parser err
-     Right val -> return val
-
-
 main :: IO ()
-main = do
-     args <- getArgs
-     evaled <- return $ liftM show $ readExpr (args !! 0) >>= eval
-     putStrLn $ extractValue $ trapError evaled
+main = do args <- getArgs
+          case length args of
+               0 -> runRepl
+               1 -> runOne $ args !! 0
+               otherwise -> putStrLn "Program takes only 0 or 1 argument"

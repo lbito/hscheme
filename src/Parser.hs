@@ -1,6 +1,5 @@
 module Parser where
 
-
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Numeric
 import Data.Char (digitToInt)
@@ -123,4 +122,3 @@ parseExpr = parseAtom
                 x <- try parseList <|> parseDottedList
                 char ')'
                 return x
-

@@ -1,5 +1,6 @@
 module LispError where
 
+import Control.Monad.Error
 import Control.Monad.Except
 import LispVal
 import Parser
@@ -13,6 +14,11 @@ data LispError = NumArgs Integer [LispVal]
                | NotFunction String String
                | UnboundVar String String
                | Default String
+
+
+instance Error LispError where
+    noMsg = Default "An error has occurred"
+    strMsg = Default
 
 showError :: LispError -> String
 showError (UnboundVar message varname)  = message ++ ": " ++ varname
